@@ -376,13 +376,6 @@ function delete_url($itemID, $oldURL, $shortCode, $TalisGUID, $token, ReportRow 
 				}
 			}
 
-			// remove online resource if it matches the URL to remove.
-			// If this is the secondary - we never want to have an online resource set there
-			if ($online_resource === $oldURL || ($primary_resource !== $resource_id && $online_resource_found === true)) {
-				$body = patch_online_resource($body, null);
-				$actionMessagePart[] = 'Had to remove online resource';
-			}
-
 			// if no changes have been made to the template then there is nothing to do.
 			if ($body === get_patch_template($resource_id)) {
 				echo_message_to_screen(DEBUG, "Nothing to update with this resource</br>");
@@ -674,8 +667,7 @@ function patch_online_resource(array $templateArr, $online_resource){
 		$templateArr['data']['attributes']['online_resource'] = null;
 	} else {
 		$templateArr['data']['attributes']['online_resource'] = [
-			"source" => "uri",
-			"link" => $online_resource
+			"source" => "open_url",
 		];
 	}
 	return $templateArr;
